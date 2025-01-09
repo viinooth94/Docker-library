@@ -4,8 +4,8 @@ COPY package.json package-lock.json ./
 RUN npm install
 COPY tsconfig.json ./
 COPY src ./src
-RUN npm run build
-
+RUN npm run build && \
+    npm prune --production
 
 FROM node:23.5-alpine3.20 AS runtime
 WORKDIR /app
