@@ -5,11 +5,15 @@ services:
       - "80:3000"
     networks:
       - library-network
+    environment:
+      - NODE_ENV=production
   back:
     build: ./Back
     ports:
       - "81:5000"
     networks:
       - library-network
+    environment:
+      - NODE_ENV=production
 networks:
   library-network: 
