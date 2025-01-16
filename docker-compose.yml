@@ -1,16 +1,20 @@
 services:
-  front:
-    build: 
-      context: ./Front
-      dockerfile: front_V2.Dockerfile
+  reverse-proxy:
+    image: nginx:1.27-alpine3.20
     ports:
       - "80:80"
     networks:
       - library-network
+    volumes:
+      - ./Reverse-Proxy/nginx.conf:/etc/nginx/nginx.conf
+  front:
+    build: 
+      context: ./Front
+      dockerfile: front_V2.Dockerfile
+    networks:
+      - library-network
   back:
     build: ./Back
-    ports:
-      - "81:5000"
     networks:
       - library-network
     environment:
@@ -24,5 +28,5 @@ services:
 #     networks:
 #       - library-network
 networks:
-  library-network: 
+  library-network:
   
