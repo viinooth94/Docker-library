@@ -1,12 +1,12 @@
 services:
-  # front:
-  #   build: 
-  #     context: ./Front
-  #     dockerfile: front_V2.Dockerfile
-  #   ports:
-  #     - "80:80"
-  #   networks:
-  #     - library-network
+  front:
+    build: 
+      context: ./Front
+      dockerfile: front_V2.Dockerfile
+    ports:
+      - "80:80"
+    networks:
+      - library-network
   back:
     build: ./Back
     ports:
@@ -15,14 +15,14 @@ services:
       - library-network
     environment:
       - NODE_ENV=production
-  front:
-    image: nginx:1.27-alpine3.20
-    ports:
-      - "80:80"
-    volumes: 
-      - ./Front/build:/usr/share/nginx/html
-    networks:
-      - library-network
+#   front:
+#     image: nginx:1.27-alpine3.20
+#     ports:
+#       - "80:80"
+#     volumes: 
+#       - ./Front/build:/usr/share/nginx/html
+#     networks:
+#       - library-network
 networks:
   library-network: 
   
