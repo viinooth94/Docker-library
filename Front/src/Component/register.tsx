@@ -16,7 +16,7 @@ const Register: React.FC = () => {
     const handleRegister = async () => {
         // Make a request to your API to register the user
         try {
-            const response = await fetch('http://localhost:81/borrowers/register', {
+            const response = await fetch(process.env.REACT_APP_BACKEND_URL + '/borrowers/register', {
                 method: 'POST',
                 body: JSON.stringify({ email, password, firstname, lastname }),
                 headers: {

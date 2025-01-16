@@ -16,7 +16,7 @@ const Login: React.FC = () => {
     const handleLogin = async () => {
         // Make a request to your API to check if the user exists
         try {
-            const response = await fetch('http://localhost:81/borrowers/login', {
+            const response = await fetch(process.env.REACT_APP_BACKEND_URL + '/borrowers/login', {
                 method: 'POST',
                 body: JSON.stringify({ email, password }),
                 headers: {

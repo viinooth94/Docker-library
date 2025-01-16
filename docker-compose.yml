@@ -13,6 +13,8 @@ services:
       dockerfile: front_V2.Dockerfile
     networks:
       - library-network
+    env_file:
+      - ./Front/.env
   back:
     build: ./Back
     networks:
