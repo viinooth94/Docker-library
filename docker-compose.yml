@@ -1,12 +1,28 @@
 services:
-  reverse-proxy:
-    image: nginx:1.27-alpine3.20
+#  reverse-proxy:
+#    image: nginx:1.27-alpine3.20
+#    ports:
+#      - "80:80"
+#    networks:
+#      - library-network
+#    volumes:
+#      - ./Reverse-Proxy/nginx.conf:/etc/nginx/nginx.conf
+
+  traefik:
+    image: "traefik:v3.3"
+    container_name: "traefik"
+    command:
+      #- "--log.level=DEBUG"
+      - "--api.insecure=true"
+      - "--providers.docker=true"
+      - "--providers.docker.exposedbydefault=false"
+      - "--entryPoints.web.address=:80"
     ports:
       - "80:80"
-    networks:
-      - library-network
+      - "8080:8080"
     volumes:
-      - ./Reverse-Proxy/nginx.conf:/etc/nginx/nginx.conf
+      - "/var/run/docker.sock:/var/run/docker.sock:ro"
+
   front:
     build: 
       context: ./Front
@@ -15,12 +31,23 @@ services:
       - library-network
     env_file:
       - ./Front/.env
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.front.rule=Host(`front.localhost`)"
+      - "traefik.http.routers.front.entrypoints=web"
+      - "traefik.http.services.front.loadbalancer.server.port=3000"
+
   back:
     build: ./Back
     networks:
       - library-network
     environment:
       - NODE_ENV=production
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.back.rule=Host(`back.localhost`)"
+      - "traefik.http.routers.back.entrypoints=web"
+      - "traefik.http.services.back.loadbalancer.server.port=5000"
 #   front:
 #     image: nginx:1.27-alpine3.20
 #     ports:
